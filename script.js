@@ -1,28 +1,102 @@
+
+/**
+ * function to toggle the class of selected menu item
+ */
+const toggleClass = (item, className) => {
+    // if item's class name is 'menu', replace it with nothing
+    if (item.className.indexOf(className) !== -1) {
+        item.className = item.className.replace(className, '');
+    }
+    // else, replace all blank characters with 'menu' class name
+    else {
+        item.className = item.className.replace(/\s+/g, ' ');
+    }
+}
+
+/**
+  * function to switch displayed item on menu
+  * (calls toggleClass to change item's class) 
+  */
+const toggleMenuDisplay = (e) => {
+    console.log('toggleMenuDisplay should be toggling...')
+    const dropdown = e.currentTarget.parentNode;
+    console.log(dropdown.value);
+    const menu = dropdown.querySelector('.menu');
+    toggleClass(menu, 'hide');
+}
+
+/**
+* event listener for selecting dropdown options 
+*/ 
+const handleOptionSelected = (e) => {
+    const id = e.target.id;
+    const newValue = e.target.textContent + '';
+    const titleElem = document.querySelector('.dropdown .title');
+
+    titleElem.textContent = newValue;
+
+    // trigger custom event
+    document.querySelector('.dropdown .title').dispatchEvent(new Event('change'));
+}
+
+/**
+ * function to add Options to Options Button
+ * Returns new Options button
+ */
+const addOptions = (optionsButton) => {
+    const optionsDropDown = document.createElement('div');
+    optionsDropDown.classList.add('dropdown');
+    const dropDownMarkup = 
+    `
+        <div class='title pointerCursor'>...</div>
+        
+        <div class='menu pointerCursor hide'>
+            <div class='option' id='option1'>Move Up</div>
+            <div class='option' id='option2'>Move Down</div>
+            <div class='option' id='option3'>Delete</div>
+        </div>
+    `
+    optionsDropDown.innerHTML = dropDownMarkup;
+    optionsButton.appendChild(optionsDropDown);
+    return optionsButton;
+}
+
 /**
  * function to add item to list
  */
-const addItem = (item) => {
+const addItem = (item, itemNumber) => {
     // get existing list from DOM
-    let existingList = document.getElementById("task-list")
-
+    let existingList = document.getElementById("task-list");
     // create li and add class, text
-    let li = document.createElement("li")
-    li.classList.add("task-item")
-    li.appendChild(document.createTextNode(item))
+    let li = document.createElement("li");
+    li.classList.add("task-item");
+    li.appendChild(document.createTextNode(item));
 
-    // create button for controling li
-    let listButton = document.createElement("button")
-    listButton.classList.add("item-ctrl")
-    listButton.textContent = "-"
+    // create button for controlling li
+    let listButton = document.createElement("button");
+    listButton.classList.add("item-ctrl");
 
-    //combine li and button into new element
-    let itemElement = document.createElement("div")
-    itemElement.classList.add("item-element")
-    itemElement.appendChild(listButton)
-    itemElement.appendChild(li)
+    // create button for controlling options
+    let optionsButton = document.createElement("button");
+    optionsButton.classList.add("item-options");
 
-    //add new element to list at bottom of DOM
-    existingList.appendChild(itemElement)
+    // creates the itemElement div and generates itemElement's ID
+    let itemElement = document.createElement("div");
+
+    // set class and id attributes and append to itemElement
+    itemElement.classList.add("item-element");
+    let itemID = `item-${itemNumber}`;
+    itemElement.setAttribute('id', itemID);
+
+    // add 3 sub elements to main "to-do item" element
+    itemElement.appendChild(listButton);
+    itemElement.appendChild(li);
+
+    //let optionsButtonMax = addOptions(optionsButton);
+    itemElement.appendChild(addOptions(optionsButton));
+
+    //add new "to-do item" element to list at bottom of DOM
+    existingList.appendChild(itemElement);
 } 
 
 /**
@@ -30,33 +104,91 @@ const addItem = (item) => {
  */
 const addArrayItem = (newTask, taskList) => {
     //get current length of array
-    let itemIndex = taskList.length
+    let itemIndex = taskList.length;
+    //(itemIndex)
     //add newTask to array of tasks
-    taskList.push(newTask)
+    taskList.push(newTask);
     //for each new task in array, create a list item
-    addItem(taskList[itemIndex])
+    addItem(taskList[itemIndex], itemIndex);
+}
+
+/**
+ * function to check item as complete
+ */
+const checkItem = (item) => {
+    null
 }
 
 /**
  * function to remove item from list
  */
+const removeItem = (item) => {
+    null
+}
 
 /**
  * Get DOM elements and add to variables
  */
-const taskList = []
-const taskForm = document.querySelector("form")
-const formEntry = document.getElementById("user-input")
-const button = document.querySelector("button")
+const taskList = [];
+const taskForm = document.querySelector("form");
+const formEntry = document.getElementById("user-input");
+const button = document.querySelector("button");
 
 /**
- * adds listener to appropriate Dom elements
+ * add listener to submit button (on click or 'enter')
  */
 taskForm.addEventListener('submit', (e) => {
-    e.preventDefault()
-    console.log("clicked!")
-    let newTask = formEntry.value
-    console.log(`formEntry textContent is currently: ${newTask}`)
-    addArrayItem(newTask, taskList)
-    formEntry.value = ""
+    e.preventDefault();
+    // if field is empty, do nothing
+    if (!formEntry.value) {
+        null
+    } else {
+        let newTask = formEntry.value;
+        //(`formEntry textContent is currently: ${newTask}`)
+        addArrayItem(newTask, taskList);
+        formEntry.value = "";
+    }
 })
+
+//add event listener to ctrl button
+document.addEventListener('click', (event) => {
+    let parentItem = event.target.parentNode
+    let itemNum = parentItem.getAttribute('id');
+    let existingCheck = document.querySelector('img');
+    // if target is Options button, do something
+    if (event.target.classList == 'item-options') {
+        console.log(`item OPTIONS BUTTON clicked for ${itemNum}.`);    
+    }
+    // if target is Control button:
+    else if (event.target.classList == 'item-ctrl')
+    {
+        //if Control button is checked, uncheck it
+        if (existingCheck != null) {
+            existingCheck.remove();
+        }
+        // otherwise, if Control button is not checked, create 'check' element and append 
+        else {
+            let check = document.createElement('img');
+            check.classList.add('is-checked');
+            check.src= '/check_small.png';
+            event.target.appendChild(check);
+        }
+    }
+})
+ 
+/**
+*   MAIN CODE     
+*   get elements from DOM 
+*/ 
+const dropdownTitle = document.querySelector('.dropdown .title');
+// if element of both classes 'dropdown' and 'title' does not exsit, do nothing
+if (dropdownTitle == null) {
+    console.log('no task items yet');
+// else, add listeners to above elements
+} else {
+    console.log('now there are...');
+    let dropdownOptions = document.querySelectorAll('.dropdown .option');
+    dropdownTitle.addEventListener('click', toggleMenuDisplay);
+    dropdownOptions.forEach(option => option.addEventListener('click', handleOptionSelected));
+}
+

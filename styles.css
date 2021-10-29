@@ -1,13 +1,18 @@
 body {
+  display: flex;
   text-align: center;
   font-family: Arial, Helvetica, sans-serif;
   align-items: center;
+  margin-left: auto;
+  justify-content:space-around;
 }
 
 .container {
-  background-color: rgb(11, 88, 88);
+  flex-basis: 75%;
+  background-color: rgb(138, 126, 139);
   border-radius: 15px;
   box-shadow: 2px 3px 3px rgba(4, 4, 20, 0.65);
+  margin: 10% auto;
   padding: 30px 0px 250px 0px;
   max-width: 75%;
 }
@@ -21,7 +26,7 @@ body {
 
 .header-sub {
   font-size: 1.5em;
-  color: sandybrown;
+  color: rgb(39, 28, 19);
   padding-bottom: 20px;
 }
 
@@ -29,39 +34,56 @@ body {
   min-width: 75%;
 }
 
+.task-section {
+  margin: auto;
+}
+
 .item-ctrl {
-  color: rgb(9, 11, 148);
-  background-color: rgb(210, 255, 255);
+  display: flex;
+  background-color: rgb(255, 255, 255);
+  border: 4px double; 
+  border-color: black;
   text-align: center;
   font-weight: 300px;
   font-size: large;
-  transition: all 0.75s ease;
-  -webkit-transition: all 0.75s ease;
-  -moz-transition: all 0.75s ease;
-  -ms-transition: all 0.75s ease;
-  -o-transition: all 0.75 ease;
-  font-weight: normal;
-  border-radius: 5px;
-  border: none;
   padding: 7px 15px 3px 15px;
   transition: all 0.75s ease;
 }
 
-.task-item {
-  min-width: 75%;
-  text-align: left;
+.is-checked {
+  padding: 0px;
+
+}
+
+.item-options {
+  background-color: rgb(210, 255, 255);
   color: rgb(9, 11, 148);
+  margin-left: 5px;
+  text-align: center;
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-weight: 500px;
+  font-size: large;
+  border-radius: 5px;
+  border: none;
+  padding: 3px 15px 7px 15px;
+}
+
+.task-item {
+  flex-basis: 95%;
+  text-align: left;
+  color: rgb(39, 28, 19);
   background-color: rgb(210, 255, 255);
   font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   font-size: larger;
   list-style-type: none;
-  padding: 7px 15px 7px 5px;
+  padding: 7px 15px 7px 15px;
   margin-left: 5px;
 }
 
 .item-element {
   display: flex;
-  margin-bottom: 5px;
+  max-width: 85%;
+  margin: 5px auto 5px auto;
 }
 
 #user-input {
@@ -71,12 +93,14 @@ body {
   padding: 4px 0px 3px 6px;
 }
 #task-list {
-  margin-top: 40px
+  margin: 40px auto auto auto;
+  padding: 0px;
 }
 
 button {
   appearance: auto;
 }
+
 #enter {
   color: rgb(9, 11, 148);
   background-color: rgb(210, 211, 255);
@@ -97,4 +121,21 @@ button {
 #enter:hover {
   background-color: rgb(109, 223, 194);
   color: #53431f;
+}
+
+.hide {
+  max-height: 0 !important
+}
+.dropdown .title {
+  /* margin: 3em; */
+  width: 100%;
+}
+.dropdown .menu {
+  transition: max-height .5s eas-out;
+  max-height: 20em;
+  overflow: hidden;
+}
+.dropdown .menu .option {
+  margin: .3em;
+  margin-top: .3em;
 }
