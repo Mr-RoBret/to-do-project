@@ -18,7 +18,7 @@ const toggleClass = (item, className) => {
   * (calls toggleClass to change item's class) 
   */
 const toggleMenuDisplay = (e) => {
-    console.log('toggleMenuDisplay should be toggling...')
+    console.log('toggleMenuDisplay should be toggling...');
     const dropdown = e.currentTarget.parentNode;
     console.log(dropdown.value);
     const menu = dropdown.querySelector('.menu');
@@ -66,25 +66,34 @@ const addOptions = (optionsButton) => {
  */
 const addItem = (item, itemNumber) => {
     // get existing list from DOM
-    let existingList = document.getElementById("task-list");
+    let existingList = document.getElementById('task-list');
     // create li and add class, text
-    let li = document.createElement("li");
-    li.classList.add("task-item");
+    let li = document.createElement('li');
+    li.classList.add('task-item');
     li.appendChild(document.createTextNode(item));
 
     // create button for controlling li
-    let listButton = document.createElement("button");
-    listButton.classList.add("item-ctrl");
+    let listButton = document.createElement('button');
+    let check = document.createElement('img');
+
+    listButton.classList.add('item-ctrl');
+
+    check.classList.add('check-img');
+    check.style.width="38px";
+    check.style.height="auto";
+    check.classList.add('is-unchecked');
+    check.src= "/images/checkmark_green.png";
+    listButton.appendChild(check);
 
     // create button for controlling options
-    let optionsButton = document.createElement("button");
-    optionsButton.classList.add("item-options");
+    let optionsButton = document.createElement('button');
+    optionsButton.classList.add('item-options');
 
     // creates the itemElement div and generates itemElement's ID
-    let itemElement = document.createElement("div");
+    let itemElement = document.createElement('div');
 
     // set class and id attributes and append to itemElement
-    itemElement.classList.add("item-element");
+    itemElement.classList.add('item-element');
     let itemID = `item-${itemNumber}`;
     itemElement.setAttribute('id', itemID);
 
@@ -130,9 +139,9 @@ const removeItem = (item) => {
  * Get DOM elements and add to variables
  */
 const taskList = [];
-const taskForm = document.querySelector("form");
-const formEntry = document.getElementById("user-input");
-const button = document.querySelector("button");
+const taskForm = document.querySelector('form');
+const formEntry = document.getElementById('user-input');
+const button = document.querySelector('button');
 
 /**
  * add listener to submit button (on click or 'enter')
@@ -150,28 +159,30 @@ taskForm.addEventListener('submit', (e) => {
     }
 })
 
-//add event listener to ctrl button
+//add event listener to ctrl buttons
 document.addEventListener('click', (event) => {
-    let parentItem = event.target.parentNode
+    let parentItem = event.target.parentNode;
     let itemNum = parentItem.getAttribute('id');
-    let existingCheck = document.querySelector('img');
+
     // if target is Options button, do something
-    if (event.target.classList == 'item-options') {
+    if (event.target.className == 'item-options') {
         console.log(`item OPTIONS BUTTON clicked for ${itemNum}.`);    
     }
     // if target is Control button:
-    else if (event.target.classList == 'item-ctrl')
-    {
+    else if (event.target.className == 'item-ctrl')
+    {   
+        let itemControl = document.querySelector('.item-ctrl');
+        console.log(`item CTRL clicked for ${itemNum}`);
+        console.log(itemControl.classList);
         //if Control button is checked, uncheck it
-        if (existingCheck != null) {
-            existingCheck.remove();
+        if (itemControl.className == 'is-checked') {
+            itemControl.classList.remove('is-checked');
+            itemControl.classList.add('is-unchecked');
         }
         // otherwise, if Control button is not checked, create 'check' element and append 
         else {
-            let check = document.createElement('img');
-            check.classList.add('is-checked');
-            check.src= '/check_small.png';
-            event.target.appendChild(check);
+            itemControl.classList.remove('is-unchecked')
+            itemControl.classList.add('is-checked');
         }
     }
 })

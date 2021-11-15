@@ -40,19 +40,31 @@ body {
 
 .item-ctrl {
   display: flex;
+  align-items: center;
   background-color: rgb(255, 255, 255);
   border: 4px double; 
   border-color: black;
   text-align: center;
   font-weight: 300px;
   font-size: large;
-  padding: 7px 15px 3px 15px;
+  height: 38px;
+  width: auto;
+  padding: 0;
   transition: all 0.75s ease;
 }
 
-.is-checked {
-  padding: 0px;
+.check-img {
+  display: flex;
+  position: relative;
+  overflow: hidden;
+}
 
+.is-checked {
+  opacity: 100%;
+}
+
+.is-unchecked {
+  opacity: 0%;
 }
 
 .item-options {
