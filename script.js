@@ -82,7 +82,7 @@ const addItem = (item, itemNumber) => {
     check.style.width="38px";
     check.style.height="auto";
     check.classList.add('is-unchecked');
-    check.src= "/images/checkmark_green.png";
+    check.src= "/images/check.png";
     listButton.appendChild(check);
 
     // create button for controlling options
@@ -153,37 +153,35 @@ taskForm.addEventListener('submit', (e) => {
         null
     } else {
         let newTask = formEntry.value;
-        //(`formEntry textContent is currently: ${newTask}`)
         addArrayItem(newTask, taskList);
         formEntry.value = "";
     }
 })
 
-//add event listener to ctrl buttons
+/**
+ * add event listener to ctrl buttons
+ */ 
 document.addEventListener('click', (event) => {
     let parentItem = event.target.parentNode;
-    let itemNum = parentItem.getAttribute('id');
+    let itemNum = parentItem.parentNode.getAttribute('id');
 
     // if target is Options button, do something
-    if (event.target.className == 'item-options') {
+    if (parentItem.className == 'item-options') {
         console.log(`item OPTIONS BUTTON clicked for ${itemNum}.`);    
     }
     // if target is Control button:
-    // else if (event.target.className == 'check-img')
     else if (parentItem.className === 'item-ctrl')
     {   
-        let itemControl = document.querySelector('.check-img');
         console.log(`item CTRL clicked for ${itemNum}`);
-        console.log(itemControl.classList);
         //if Control button is checked, uncheck it
-        if (itemControl.className === 'check-img is-checked') {
-            itemControl.classList.remove('is-checked');
-            itemControl.classList.add('is-unchecked');
+        if (event.target.className === 'check-img is-checked') {
+            event.target.classList.remove('is-checked');
+            event.target.classList.add('is-unchecked');
         }
         // otherwise, if Control button is not checked, create 'check' element and append 
         else {
-            itemControl.classList.remove('is-unchecked')
-            itemControl.classList.add('is-checked');
+            event.target.classList.remove('is-unchecked')
+            event.target.classList.add('is-checked');
         }
     }
 })

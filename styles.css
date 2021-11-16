@@ -54,7 +54,7 @@ body {
 }
 
 .check-img {
-  display: flex;
+  /* display: flex; */
   position: relative;
   overflow: hidden;
 }
