@@ -171,7 +171,7 @@ taskForm.addEventListener('submit', (e) => {
  */ 
 document.addEventListener('click', (event) => {
     let parentItem = event.target.parentNode;
-    let itemNum = parentItem.parentNode.getAttribute('id');
+    let itemNum = parentItem.getAttribute('id');
 
     // if target is Options button, do something
     if (parentItem.className == 'item-options') {
