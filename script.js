@@ -1,7 +1,7 @@
 
 /**
  * function to toggle the class of selected menu item
- */
+
 const toggleClass = (item, className) => {
     // if item's class name is 'menu', replace it with nothing
     if (item.className.indexOf(className) !== -1) {
@@ -12,11 +12,12 @@ const toggleClass = (item, className) => {
         item.className = item.className.replace(/\s+/g, ' ');
     }
 }
+ */
 
 /**
   * function to switch displayed item on menu
   * (calls toggleClass to change item's class) 
-  */
+
 const toggleMenuDisplay = (e) => {
     console.log('toggleMenuDisplay should be toggling...');
     const dropdown = e.currentTarget.parentNode;
@@ -24,10 +25,11 @@ const toggleMenuDisplay = (e) => {
     const menu = dropdown.querySelector('.menu');
     toggleClass(menu, 'hide');
 }
+*/
 
 /**
 * event listener for selecting dropdown options 
-*/ 
+
 const handleOptionSelected = (e) => {
     const id = e.target.id;
     const newValue = e.target.textContent + '';
@@ -38,6 +40,7 @@ const handleOptionSelected = (e) => {
     // trigger custom event
     document.querySelector('.dropdown .title').dispatchEvent(new Event('change'));
 }
+*/ 
 
 /**
  * function to add Options to Options Button
@@ -62,47 +65,60 @@ const addOptions = (optionsButton) => {
 }
 
 /**
- * function to add item to list
+ * function to add check to ctrl button
  */
-const addItem = (item, itemNumber) => {
-    // get existing list from DOM
-    let existingList = document.getElementById('task-list');
-    // create li and add class, text
-    let li = document.createElement('li');
-    li.classList.add('task-item');
-    li.appendChild(document.createTextNode(item));
-
-    // create button for controlling li
-    let listButton = document.createElement('button');
+const createCheck = () => {
     let check = document.createElement('img');
-
-    listButton.classList.add('item-ctrl');
-
     check.classList.add('check-img');
     check.style.width="38px";
     check.style.height="auto";
     check.classList.add('is-unchecked');
     check.src= "/images/check.png";
-    listButton.appendChild(check);
+    return check;
+}
 
-    // create button for controlling options
+// create button for controlling li
+const createCtrlButton = () => {
+    let ctrlButton = document.createElement('button');
+    ctrlButton.classList.add('item-ctrl');
+    ctrlButton.appendChild(createCheck());
+    return ctrlButton;
+}
+
+// create button for controlling options
+const createOptionsButton = () => {
     let optionsButton = document.createElement('button');
     optionsButton.classList.add('item-options');
+    addOptions(optionsButton);
+    return optionsButton;
+}
 
-    // creates the itemElement div and generates itemElement's ID
+const createListItem = (item) => {
+    // create li and add class, text
+    let li = document.createElement('li');
+    li.classList.add('task-item');
+    li.appendChild(document.createTextNode(item));
+    return li;
+}
+
+/**
+ * function to add item to list
+ */
+const addItem = (item, itemNumber) => {
+    // get existing list from DOM
+    let existingList = document.getElementById('task-list');
+
+    // create the itemElement div and generates itemElement's ID
     let itemElement = document.createElement('div');
-
     // set class and id attributes and append to itemElement
     itemElement.classList.add('item-element');
     let itemID = `item-${itemNumber}`;
     itemElement.setAttribute('id', itemID);
 
     // add 3 sub elements to main "to-do item" element
-    itemElement.appendChild(listButton);
-    itemElement.appendChild(li);
-
-    //let optionsButtonMax = addOptions(optionsButton);
-    itemElement.appendChild(addOptions(optionsButton));
+    itemElement.appendChild(createCtrlButton());
+    itemElement.appendChild(createListItem(item));
+    itemElement.appendChild(createOptionsButton());
 
     //add new "to-do item" element to list at bottom of DOM
     existingList.appendChild(itemElement);
@@ -114,18 +130,10 @@ const addItem = (item, itemNumber) => {
 const addArrayItem = (newTask, taskList) => {
     //get current length of array
     let itemIndex = taskList.length;
-    //(itemIndex)
     //add newTask to array of tasks
     taskList.push(newTask);
     //for each new task in array, create a list item
     addItem(taskList[itemIndex], itemIndex);
-}
-
-/**
- * function to check item as complete
- */
-const checkItem = (item) => {
-    null
 }
 
 /**
