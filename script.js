@@ -1,35 +1,5 @@
 
 /**
- * function to toggle the class of selected menu item
-
-const toggleClass = (item, className) => {
-    // if item's class name is 'menu', replace it with nothing
-    if (item.className.indexOf(className) !== -1) {
-        item.className = item.className.replace(className, '');
-    }
-    // else, replace all blank characters with 'menu' class name
-    else {
-        item.className = item.className.replace(/\s+/g, ' ');
-    }
-}
- */
-
-/**
-  * function to switch displayed item on menu
-  * (calls toggleClass to change item's class) 
-
-const toggleMenuDisplay = (e) => {
-    console.log('toggleMenuDisplay should be toggling...');
-    const dropdown = e.currentTarget.parentNode;
-    console.log(dropdown.value);
-    const menu = dropdown.querySelector('.menu');
-    toggleClass(menu, 'hide');
-}
-*/
-
-
-
-/**
  * function to add Options to Options Button
  * Returns new Options button
  */
@@ -39,16 +9,18 @@ const addOptions = () => {
     const dropDownMarkup = 
     `        
         <div class='menu pointerCursor'>
-            <div class='option' id='option1'>Move Up</div>
-            <div class='option' id='option2'>Move Down</div>
-            <div class='option' id='option3'>Delete</div>
+            <div class='option' id='move-up'>Move Up</div>
+            <div class='option' id='move-dwn'>Move Down</div>
+            <div class='option' id='delete'>Delete</div>
         </div>
     `
-
     optionsDropDown.innerHTML = dropDownMarkup;
     return optionsDropDown;
-    // optionsButton.appendChild(optionsDropDown);
-    // return optionsButton;
+}
+
+const collapseOptions = () => {
+    let currentOptions = document.querySelector('.item-options');
+    currentOptions.innerText = '...';
 }
 
 /**
@@ -77,7 +49,6 @@ const createOptionsButton = () => {
     let optionsButton = document.createElement('button');
     optionsButton.classList.add('item-options');
     optionsButton.innerText = '...';
-    // addOptions(optionsButton);
     return optionsButton;
 }
 
@@ -125,23 +96,38 @@ const addArrayItem = (newTask, taskList) => {
 }
 
 /**
- * function to remove item from list
+ * function to move item up, down, or remove from array
  */
-const removeItem = (item) => {
-    null
+const reOrderArray = (itemNum, action) => {
+    // if action == 'move up', change currentItem's class to itemNum --;
+    // else if action == 'move down', change currentItem's class to itemNum ++;
+    // else if action = 'remove', remove from array 
 }
 
 const displayActions = (itemNum) => {
     // display all buttons
-    // let itemID = `item-${itemNum}`;
-    // console.log(`itemID is ${itemID}`);
     let currentItem = document.getElementById(itemNum);
-    console.log(currentItem);
+    let currentOptions = currentItem.lastChild;
     let dropDownMenu = addOptions();
-    currentItem.appendChild(dropDownMenu);
-    // get menu parent ??
-    document.addEventListener('click', (event) => {
+    let action = '';
 
+    currentOptions.appendChild(dropDownMenu);
+    document.addEventListener('click', (event) => {
+        /**
+         * add event listeners to options in dropdown
+         */
+        if (event.target.id === 'move-up') {
+            console.log(`item ${itemNum} moved up 1 space`);
+            action = 'move up';
+        } else if (event.target.id === 'move-dwn') {
+            console.log(`item ${itemNum} moved down 1 space`);
+            action = 'move down';
+        } else if (event.target.id === 'delete') {
+            console.log(`item ${itemNum} deleted`);
+            action = 'remove';
+        }
+        reOrderArray(itemNum, action);
+        collapseOptions();
     })
 }
 
@@ -152,24 +138,9 @@ const displayActions = (itemNum) => {
 const taskList = [];
 const taskForm = document.querySelector('form');
 const formEntry = document.getElementById('user-input');
-// const button = document.querySelector('button');
-const dropdownTitle = document.querySelector('.dropdown .title');
-
-// if element of both classes 'dropdown' and 'title' does not exsit, do nothing
-if (dropdownTitle == null) {
-    console.log('no task items yet');
-
-// else, add listeners to above elements
-} else {
-    console.log('task items added!');
-    let dropdownOptions = document.querySelectorAll('.dropdown .option');
-    dropdownTitle.addEventListener('click', toggleMenuDisplay);
-    dropdownOptions.forEach(option => option.addEventListener('click', handleOptionSelected));
-}
-
 
 /**
- * add listener to submit button (on click or 'enter')
+ * add event listener to submit button (on click or 'enter')
  */
 taskForm.addEventListener('submit', (e) => {
     e.preventDefault();
