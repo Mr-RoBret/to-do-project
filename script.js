@@ -27,41 +27,28 @@ const toggleMenuDisplay = (e) => {
 }
 */
 
-/**
-* event listener for selecting dropdown options 
 
-const handleOptionSelected = (e) => {
-    const id = e.target.id;
-    const newValue = e.target.textContent + '';
-    const titleElem = document.querySelector('.dropdown .title');
-
-    titleElem.textContent = newValue;
-
-    // trigger custom event
-    document.querySelector('.dropdown .title').dispatchEvent(new Event('change'));
-}
-*/ 
 
 /**
  * function to add Options to Options Button
  * Returns new Options button
  */
-const addOptions = (optionsButton) => {
+const addOptions = () => {
     const optionsDropDown = document.createElement('div');
     optionsDropDown.classList.add('dropdown');
     const dropDownMarkup = 
-    `
-        <div class='title pointerCursor'>...</div>
-        
-        <div class='menu pointerCursor hide'>
+    `        
+        <div class='menu pointerCursor'>
             <div class='option' id='option1'>Move Up</div>
             <div class='option' id='option2'>Move Down</div>
             <div class='option' id='option3'>Delete</div>
         </div>
     `
+
     optionsDropDown.innerHTML = dropDownMarkup;
-    optionsButton.appendChild(optionsDropDown);
-    return optionsButton;
+    return optionsDropDown;
+    // optionsButton.appendChild(optionsDropDown);
+    // return optionsButton;
 }
 
 /**
@@ -89,7 +76,8 @@ const createCtrlButton = () => {
 const createOptionsButton = () => {
     let optionsButton = document.createElement('button');
     optionsButton.classList.add('item-options');
-    addOptions(optionsButton);
+    optionsButton.innerText = '...';
+    // addOptions(optionsButton);
     return optionsButton;
 }
 
@@ -143,13 +131,42 @@ const removeItem = (item) => {
     null
 }
 
+const displayActions = (itemNum) => {
+    // display all buttons
+    // let itemID = `item-${itemNum}`;
+    // console.log(`itemID is ${itemID}`);
+    let currentItem = document.getElementById(itemNum);
+    console.log(currentItem);
+    let dropDownMenu = addOptions();
+    currentItem.appendChild(dropDownMenu);
+    // get menu parent ??
+    document.addEventListener('click', (event) => {
+
+    })
+}
+
 /**
- * Get DOM elements and add to variables
- */
+*   MAIN CODE     
+*   get elements from DOM 
+*/ 
 const taskList = [];
 const taskForm = document.querySelector('form');
 const formEntry = document.getElementById('user-input');
-const button = document.querySelector('button');
+// const button = document.querySelector('button');
+const dropdownTitle = document.querySelector('.dropdown .title');
+
+// if element of both classes 'dropdown' and 'title' does not exsit, do nothing
+if (dropdownTitle == null) {
+    console.log('no task items yet');
+
+// else, add listeners to above elements
+} else {
+    console.log('task items added!');
+    let dropdownOptions = document.querySelectorAll('.dropdown .option');
+    dropdownTitle.addEventListener('click', toggleMenuDisplay);
+    dropdownOptions.forEach(option => option.addEventListener('click', handleOptionSelected));
+}
+
 
 /**
  * add listener to submit button (on click or 'enter')
@@ -174,8 +191,9 @@ document.addEventListener('click', (event) => {
     let itemNum = parentItem.getAttribute('id');
 
     // if target is Options button, do something
-    if (parentItem.className == 'item-options') {
-        console.log(`item OPTIONS BUTTON clicked for ${itemNum}.`);    
+    if (event.target.className == 'item-options') {
+        console.log(`item OPTIONS BUTTON clicked for ${itemNum}.`); 
+        displayActions(itemNum);   
     }
     // if target is Control button:
     else if (parentItem.className === 'item-ctrl')
@@ -193,20 +211,3 @@ document.addEventListener('click', (event) => {
         }
     }
 })
- 
-/**
-*   MAIN CODE     
-*   get elements from DOM 
-*/ 
-const dropdownTitle = document.querySelector('.dropdown .title');
-// if element of both classes 'dropdown' and 'title' does not exsit, do nothing
-if (dropdownTitle == null) {
-    console.log('no task items yet');
-// else, add listeners to above elements
-} else {
-    console.log('now there are...');
-    let dropdownOptions = document.querySelectorAll('.dropdown .option');
-    dropdownTitle.addEventListener('click', toggleMenuDisplay);
-    dropdownOptions.forEach(option => option.addEventListener('click', handleOptionSelected));
-}
-
