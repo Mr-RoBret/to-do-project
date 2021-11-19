@@ -18,11 +18,6 @@ const addOptions = () => {
     return optionsDropDown;
 }
 
-const collapseOptions = () => {
-    let currentOptions = document.querySelector('.item-options');
-    currentOptions.innerText = '...';
-}
-
 /**
  * function to add check to ctrl button
  */
@@ -108,6 +103,9 @@ const displayActions = (itemNum) => {
     // display all buttons
     let currentItem = document.getElementById(itemNum);
     let currentOptions = currentItem.lastChild;
+
+    console.log(`last child is ${currentOptions.innerHTML}`);
+
     let dropDownMenu = addOptions();
     let action = '';
 
@@ -127,7 +125,7 @@ const displayActions = (itemNum) => {
             action = 'remove';
         }
         reOrderArray(itemNum, action);
-        collapseOptions();
+        dropDownMenu.remove();
     })
 }
 
