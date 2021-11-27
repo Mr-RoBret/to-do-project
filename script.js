@@ -10,7 +10,7 @@ const addOptions = () => {
     `        
         <div class='menu pointerCursor'>
             <div class='option' id='move-up'>Move Up</div>
-            <div class='option' id='move-dwn'>Move Down</div>
+            <div class='option' id='move-dwn'>Move Dwn</div>
             <div class='option' id='delete'>Delete</div>
         </div>
     `
@@ -58,15 +58,15 @@ const createListItem = (item) => {
 /**
  * function to add item to list
  */
-const addItem = (item, itemNumber) => {
+const addItem = (item, itemIndex) => {
     // get existing list from DOM
     let existingList = document.getElementById('task-list');
 
-    // create the itemElement div and generates itemElement's ID
+    // create the itemElement div and generate itemElement's ID
     let itemElement = document.createElement('div');
     // set class and id attributes and append to itemElement
     itemElement.classList.add('item-element');
-    let itemID = `item-${itemNumber}`;
+    let itemID = `item-${itemIndex}`;
     itemElement.setAttribute('id', itemID);
 
     // add 3 sub elements to main "to-do item" element
@@ -94,6 +94,20 @@ const addArrayItem = (newTask, taskList) => {
  * function to move item up, down, or remove from array
  */
 const reOrderArray = (itemNum, action) => {
+    //get current array of items
+    console.log(taskList);
+    let currentItem = document.getElementById(itemNum);
+    let currentTask = currentItem.querySelector('.task-item');
+    console.log(`currentTask is ${currentTask}.`);
+    let taskText = currentTask.innerText;
+    console.log(`taskText is ${taskText}`);
+    let itemIndex = taskList.indexOf(taskText);
+    console.log(`item's Index is ${itemIndex} and the index type is ${typeof itemIndex}`);
+    if (action === 'move up') {
+        if (itemIndex !== 0) {
+            
+        }
+    }
     // if action == 'move up', change currentItem's class to itemNum --;
     // else if action == 'move down', change currentItem's class to itemNum ++;
     // else if action = 'remove', remove from array 
@@ -102,6 +116,8 @@ const reOrderArray = (itemNum, action) => {
 const displayActions = (itemNum) => {
     // display all buttons
     let currentItem = document.getElementById(itemNum);
+    // let childItem = currentItem.child
+    console.log(`currentItem is ${currentItem}`);
     let currentOptions = currentItem.lastChild;
 
     console.log(`last child is ${currentOptions.innerHTML}`);
@@ -110,6 +126,8 @@ const displayActions = (itemNum) => {
     let action = '';
 
     currentOptions.appendChild(dropDownMenu);
+
+    // event listener for click
     document.addEventListener('click', (event) => {
         /**
          * add event listeners to options in dropdown
@@ -134,6 +152,7 @@ const displayActions = (itemNum) => {
 *   get elements from DOM 
 */ 
 const taskList = [];
+console.log(Array.isArray(taskList));
 const taskForm = document.querySelector('form');
 const formEntry = document.getElementById('user-input');
 
@@ -156,11 +175,12 @@ taskForm.addEventListener('submit', (e) => {
  * add event listener to ctrl buttons
  */ 
 document.addEventListener('click', (event) => {
-    let parentItem = event.target.parentNode;
+    let parentItem = event.target.parentElement;
     let itemNum = parentItem.getAttribute('id');
-
+ 
     // if target is Options button, do something
     if (event.target.className == 'item-options') {
+         
         console.log(`item OPTIONS BUTTON clicked for ${itemNum}.`); 
         displayActions(itemNum);   
     }
