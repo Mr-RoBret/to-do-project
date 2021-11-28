@@ -95,22 +95,37 @@ const addArrayItem = (newTask, taskList) => {
  */
 const reOrderArray = (itemNum, action) => {
     //get current array of items
-    console.log(taskList);
     let currentItem = document.getElementById(itemNum);
     let currentTask = currentItem.querySelector('.task-item');
-    console.log(`currentTask is ${currentTask}.`);
     let taskText = currentTask.innerText;
-    console.log(`taskText is ${taskText}`);
     let itemIndex = taskList.indexOf(taskText);
-    console.log(`item's Index is ${itemIndex} and the index type is ${typeof itemIndex}`);
+
     if (action === 'move up') {
         if (itemIndex !== 0) {
-            
+            let temp = taskList.splice(itemIndex, 1)[0];
+            console.log(`temp is ${temp}`)
+            taskList.splice(itemIndex-1, 0, temp);
+            console.log(taskList);
+            console.log(`item's Index is ${itemIndex}`);
         }
     }
     // if action == 'move up', change currentItem's class to itemNum --;
     // else if action == 'move down', change currentItem's class to itemNum ++;
     // else if action = 'remove', remove from array 
+}
+
+const reOrderList = (itemNum, action) => {
+    let existingList = document.getElementById('task-list');
+    let currentItem = document.getElementById(itemNum);
+
+    if (action === 'move up') {
+        // if (itemIndex !== 0) {
+            let prevItem = currentItem.previousElementSibling;
+            let tempItem = prevItem;
+            existingList.removeChild(prevItem);
+            existingList.appendChild(tempItem);
+        // }
+    }
 }
 
 const displayActions = (itemNum) => {
@@ -142,7 +157,8 @@ const displayActions = (itemNum) => {
             console.log(`item ${itemNum} deleted`);
             action = 'remove';
         }
-        reOrderArray(itemNum, action);
+        // reOrderArray(itemNum, action);
+        reOrderList(itemNum, action);
         dropDownMenu.remove();
     })
 }
