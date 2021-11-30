@@ -90,76 +90,67 @@ const addArrayItem = (newTask, taskList) => {
     addItem(taskList[itemIndex], itemIndex);
 }
 
-/**
- * function to move item up, down, or remove from array
- */
-const reOrderArray = (itemNum, action) => {
-    //get current array of items
-    let currentItem = document.getElementById(itemNum);
-    let currentTask = currentItem.querySelector('.task-item');
-    let taskText = currentTask.innerText;
-    let itemIndex = taskList.indexOf(taskText);
-
-    if (action === 'move up') {
-        if (itemIndex !== 0) {
-            let temp = taskList.splice(itemIndex, 1)[0];
-            console.log(`temp is ${temp}`)
-            taskList.splice(itemIndex-1, 0, temp);
-            console.log(taskList);
-            console.log(`item's Index is ${itemIndex}`);
-        }
-    }
-    // if action == 'move up', change currentItem's class to itemNum --;
-    // else if action == 'move down', change currentItem's class to itemNum ++;
-    // else if action = 'remove', remove from array 
-}
-
 const reOrderList = (itemNum, action) => {
-    let existingList = document.getElementById('task-list');
     let currentItem = document.getElementById(itemNum);
+    let parentDiv = currentItem.parentNode;
+    let topID = parentDiv.firstElementChild.id;
+    console.log(`topID is ${topID}`);
+    // console.log(`parentDiv is ${parentDiv.innerText}`);
 
     if (action === 'move up') {
-        // if (itemIndex !== 0) {
-            let prevItem = currentItem.previousElementSibling;
-            let tempItem = prevItem;
-            existingList.removeChild(prevItem);
-            existingList.appendChild(tempItem);
-        // }
+        console.log(currentItem.id);
+         if (currentItem.id !== topID) {
+            let prevItem = currentItem.previousSibling;
+            parentDiv.insertBefore(currentItem, prevItem);
+            // let tempItem = prevItem;
+            // existingList.removeChild(prevItem);
+            // existingList.appendChild(tempItem);
+        }
+    // } else if (action === 'move down') {
+    //     if (itemIndex !== taskList.length) {
+    //         let nextItem = currentItem.nextSibling;
+    //         console.log(`nextItem is ${nextItem}`);
+    //         let tempItem = nextItem;
+    //         existingList.removeChild(nextItem);
+    //         existingList.appendChild(tempItem);
+    //     }
+    // }
     }
 }
 
 const displayActions = (itemNum) => {
     // display all buttons
     let currentItem = document.getElementById(itemNum);
-    // let childItem = currentItem.child
-    console.log(`currentItem is ${currentItem}`);
     let currentOptions = currentItem.lastChild;
-
-    console.log(`last child is ${currentOptions.innerHTML}`);
-
     let dropDownMenu = addOptions();
+    // console.log(dropDownMenu);
     let action = '';
 
     currentOptions.appendChild(dropDownMenu);
 
     // event listener for click
     document.addEventListener('click', (event) => {
+        // let dropDownDiv = document.querySelector('menu');
+        if (!event.target.parentElement === dropDownMenu) {
+            console.log(`${dropDownMenu} was not clicked`);
+        } else {
         /**
          * add event listeners to options in dropdown
          */
-        if (event.target.id === 'move-up') {
-            console.log(`item ${itemNum} moved up 1 space`);
-            action = 'move up';
-        } else if (event.target.id === 'move-dwn') {
-            console.log(`item ${itemNum} moved down 1 space`);
-            action = 'move down';
-        } else if (event.target.id === 'delete') {
-            console.log(`item ${itemNum} deleted`);
-            action = 'remove';
-        }
+            if (event.target.id === 'move-up') {
+                console.log(`item ${itemNum} moved up 1 space`);
+                action = 'move up';
+            } else if (event.target.id === 'move-dwn') {
+                console.log(`item ${itemNum} moved down 1 space`);
+                action = 'move down';
+            } else if (event.target.id === 'delete') {
+                console.log(`item ${itemNum} deleted`);
+                action = 'remove';
+            }
         // reOrderArray(itemNum, action);
         reOrderList(itemNum, action);
-        dropDownMenu.remove();
+        }
+    dropDownMenu.remove();
     })
 }
 
@@ -168,7 +159,7 @@ const displayActions = (itemNum) => {
 *   get elements from DOM 
 */ 
 const taskList = [];
-console.log(Array.isArray(taskList));
+// console.log(Array.isArray(taskList));
 const taskForm = document.querySelector('form');
 const formEntry = document.getElementById('user-input');
 
@@ -188,31 +179,31 @@ taskForm.addEventListener('submit', (e) => {
 })
 
 /**
- * add event listener to ctrl buttons
+ * add event listener to CTRL/Options buttons
  */ 
 document.addEventListener('click', (event) => {
     let parentItem = event.target.parentElement;
     let itemNum = parentItem.getAttribute('id');
  
     // if target is Options button, do something
-    if (event.target.className == 'item-options') {
+    if (event.target.className === 'item-options') {
          
         console.log(`item OPTIONS BUTTON clicked for ${itemNum}.`); 
         displayActions(itemNum);   
     }
     // if target is Control button:
-    else if (parentItem.className === 'item-ctrl')
-    {   
-        console.log(`item CTRL clicked for ${itemNum}`);
-        //if Control button is checked, uncheck it
-        if (event.target.className === 'check-img is-checked') {
-            event.target.classList.remove('is-checked');
-            event.target.classList.add('is-unchecked');
-        }
-        // otherwise, if Control button is not checked, create 'check' element and append 
-        else {
-            event.target.classList.remove('is-unchecked')
-            event.target.classList.add('is-checked');
-        }
-    }
+    // else if (parentItem.className === 'item-ctrl')
+    // {   
+    //     console.log(`item CTRL clicked for ${itemNum}`);
+    //     //if Control button is checked, uncheck it
+    //     if (event.target.className === 'check-img is-checked') {
+    //         event.target.classList.remove('is-checked');
+    //         event.target.classList.add('is-unchecked');
+    //     }
+    //     // otherwise, if Control button is not checked, create 'check' element and append 
+    //     else {
+    //         event.target.classList.remove('is-unchecked')
+    //         event.target.classList.add('is-checked');
+    //     }
+    // }
 })
