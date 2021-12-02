@@ -71,6 +71,8 @@ body {
 
 .is-struck-out {
   text-decoration: line-through;
+  text-decoration-thickness: 2px;
+  text-decoration-color: rgba(31, 107, 69, 75%);
 }
 
 .item-options {

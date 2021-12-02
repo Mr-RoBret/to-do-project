@@ -147,12 +147,12 @@ document.addEventListener('click', (event) => {
         let currentOptions = parentItem.lastChild;
 
         console.log(`item OPTIONS BUTTON clicked for ${itemNum}.`);
-        
+
         let dropDownMenu = addOptions();
         currentOptions.appendChild(dropDownMenu);
 
         // event listener for click
-        document.addEventListener('click', (event) => {
+        currentOptions.addEventListener('click', (event) => {
             if (event.target.id === 'move-up') {
                 console.log(`item ${itemNum} moved up 1 space`);
                 action = 'move up';
@@ -166,24 +166,28 @@ document.addEventListener('click', (event) => {
         // reOrderArray(itemNum, action);
         reOrderList(parentItem, action);
         dropDownMenu.remove();
+        // action = '';
         })
     }
 
     // if target is Control button:
     else if (parentItem.className === 'item-ctrl')
     {   
+        let checkText = parentItem.nextElementSibling;
+        console.log(checkText);
         // if Control button is checked, uncheck it
         // this should use 'toggle'...
         if (event.target.className === 'check-img is-checked') {
             event.target.classList.remove('is-checked');
             event.target.classList.add('is-unchecked');
+            checkText.classList.remove('is-struck-out');
             // parentItem.firstElementChild.classList.remove('is-struck-out');
         }
         // otherwise, if Control button is not checked, create 'check' element and append 
         else {
             event.target.classList.remove('is-unchecked')
             event.target.classList.add('is-checked');
-            // parentItem.firstElementChild.classList.add('is-struck-out');
+            checkText.classList.add('is-struck-out');
         }
     }
 })
