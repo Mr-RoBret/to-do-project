@@ -152,7 +152,7 @@ document.addEventListener('click', (event) => {
         currentOptions.appendChild(dropDownMenu);
 
         // event listener for click
-        currentOptions.addEventListener('click', (event) => {
+        dropDownMenu.addEventListener('click', (event) => {
             if (event.target.id === 'move-up') {
                 console.log(`item ${itemNum} moved up 1 space`);
                 action = 'move up';
