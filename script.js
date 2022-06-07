@@ -90,7 +90,7 @@ const addArrayItem = (newTask, taskList) => {
     addItem(taskList[itemIndex], itemIndex);
 }
 
-const reOrderList = (currentItem, action) => {
+const reOrderList = (currentItem, action, taskList) => {
     let parentDiv = currentItem.parentNode;
 
     if (action === 'move up') {
@@ -98,16 +98,19 @@ const reOrderList = (currentItem, action) => {
         if (currentItem.previousElementSibling) {
             let prevItem = currentItem.previousElementSibling;
             parentDiv.insertBefore(currentItem, prevItem);
-            // console.log(`${currentItem.innerText} was moved above ${prevItem.innerText}`);    
+ 
         }
 
     } else if (action === 'move down') {
         if (currentItem.nextElementSibling) {
             let nextItem = currentItem.nextElementSibling;
-            // console.log(`nextItem is ${nextItem}`);
             parentDiv.insertBefore(nextItem, currentItem);
-            // console.log(`${nextItem.innerText} was moved before ${currentItem.innerText}`);
+            
         }
+    } else if (action === 'remove') {
+        let itemIndex = taskList.indexOf(currentItem);
+        taskList.pop(taskList[itemIndex]);
+        currentItem.remove();
     }
 }
 
@@ -164,7 +167,7 @@ document.addEventListener('click', (event) => {
                 action = 'remove';
             }
         // reOrderArray(itemNum, action);
-        reOrderList(parentItem, action);
+        reOrderList(parentItem, action, taskList);
         dropDownMenu.remove();
         // action = '';
         })
